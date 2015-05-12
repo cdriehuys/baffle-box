@@ -19,6 +19,6 @@ public class Game {
     /**************************** Other Methods *****************************/
 
     public void draw(Graphics g) {
-        grid.draw(g, 10, 10);
+        grid.draw(g, 50, 50);
     }
 }

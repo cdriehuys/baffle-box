@@ -48,6 +48,13 @@ public class Grid {
                 int bottomRightY = topRightY + BOX_SIZE + BORDER_WIDTH;
 
                 g.drawLine(colX, topRightY, colX, bottomRightY);
+
+                if (row == 0) {
+                    g.drawString(String.valueOf(grid.length + col), colX - BOX_SIZE, topRightY - (BOX_SIZE / 2));
+                } else if (row == grid.length - 1) {
+                    int perimeter = 2 * grid.length + 2 * grid[0].length;
+                    g.drawString(String.valueOf(perimeter - col), colX - BOX_SIZE, bottomRightY + BOX_SIZE);
+                }
             }
 
             int borderY = (BOX_SIZE + BORDER_WIDTH) * (row + 1) + BORDER_WIDTH + y;

@@ -2,13 +2,9 @@ import java.awt.*;
 
 public class Box {
 
-    private static final int FORWARD_BAFFLE = 1;
-    private static final int BACK_BAFFLE = 2;
-
     private boolean baffle;
     private boolean baffleVisible;
-
-    private int baffleDir;
+    private boolean forwardBaffle;
 
 
     public Box(boolean baffle) {
@@ -33,17 +29,14 @@ public class Box {
 
         baffle = true;
 
-        if (Math.random() < .5)
-            baffleDir = FORWARD_BAFFLE;
-        else
-            baffleDir = BACK_BAFFLE;
+        forwardBaffle = Math.random() < .5;
     }
 
     public void draw(Graphics g, int x, int y, int boxSize) {
 
         if (baffle && baffleVisible) {
 
-            if (baffleDir == FORWARD_BAFFLE)
+            if (forwardBaffle)
                 g.drawLine(x, y + boxSize, x + boxSize, y);
             else
                 g.drawLine(x, y, x + boxSize, y + boxSize);

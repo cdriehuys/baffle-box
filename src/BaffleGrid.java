@@ -58,6 +58,8 @@ public class BaffleGrid extends JPanel {
 
     /****************************** Accessors *******************************/
 
+    public Game getGame() { return (Game)getParent(); }
+
     /****************************** Mutators ********************************/
 
     /**************************** Other Methods *****************************/

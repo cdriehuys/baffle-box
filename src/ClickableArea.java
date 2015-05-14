@@ -65,6 +65,8 @@ public class ClickableArea extends JComponent {
 
     /****************************** Accessors *******************************/
 
+    public BaffleGrid getBaffleGrid() { return (BaffleGrid)getParent(); }
+
     /****************************** Mutators ********************************/
 
     public void setDefaultBorder(Border b) {

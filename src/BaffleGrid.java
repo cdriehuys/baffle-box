@@ -60,6 +60,15 @@ public class BaffleGrid extends JPanel {
 
     /**************************** Other Methods *****************************/
 
+    public void fireBeam(int perimVal) {
+
+        try {
+            System.out.println("Firing beam in dir: " + getBeamDir(perimVal));
+        } catch (NoSuchFieldException e) {
+            System.out.println("Error firing beam.");
+        }
+    }
+
     private ArrayList<Integer[]> getPerimIndexes() {
 
         ArrayList<Integer[]> perimIndexes = new ArrayList<Integer[]>();

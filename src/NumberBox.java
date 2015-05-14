@@ -25,8 +25,11 @@ public class NumberBox extends ClickableArea {
 
     @Override
     public void onClick() {
-        JOptionPane.showMessageDialog(getParent(), "Would you like to fire a beam from box " + val + "?", "Fire?",
-                JOptionPane.QUESTION_MESSAGE);
+        if (JOptionPane.showConfirmDialog(getParent(), "Would you like to fire a beam from box " + val + "?", "Fire?",
+                JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION) {
+
+            getBaffleGrid().fireBeam(val);
+        }
     }
 
     /****************************** Accessors *******************************/

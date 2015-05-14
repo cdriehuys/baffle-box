@@ -9,6 +9,13 @@ public class Game extends JPanel {
     public static final int FIRE_PENALTY = -1;
     public static final int WRONG_GUESS = -3;
 
+    public static final int EASY = 1;
+    public static final int EASY_BAFFLES = 10;
+    public static final int MEDIUM = 2;
+    public static final int MEDIUM_BAFFLES = 15;
+    public static final int HARD = 3;
+    public static final int HARD_BAFFLES = 20;
+
 
     private HistoryDialog history;
 
@@ -26,7 +33,22 @@ public class Game extends JPanel {
 
         setLayout(new BorderLayout());
 
-        int numBaffles = getNumBaffles();
+        int difficulty = getDifficulty();
+
+        int numBaffles;
+
+        switch (difficulty) {
+            case EASY:
+                numBaffles = EASY_BAFFLES;
+                break;
+
+            case HARD:
+                numBaffles = HARD_BAFFLES;
+                break;
+
+            default:
+                numBaffles = MEDIUM_BAFFLES;
+        }
 
         add(new BaffleGrid(10, 10, numBaffles), BorderLayout.CENTER);
 
@@ -59,23 +81,47 @@ public class Game extends JPanel {
             history.setVisible(true);
     }
 
+    public void win() {
+
+        JOptionPane.showMessageDialog(this, "Congratulations! You won!", "Winner", JOptionPane.PLAIN_MESSAGE);
+    }
+
     public void logMove(String move) {
         history.logMove(move);
     }
 
-    private int getNumBaffles() {
+    private int getDifficulty() {
 
-        int num;
+        JPanel panel = new JPanel();
 
-        try {
-            num = Integer.parseInt(JOptionPane.showInputDialog(this, "Enter the number of baffles to generate.",
-                    "How Many Baffles?", JOptionPane.QUESTION_MESSAGE));
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Please enter a valid integer!", "Invalid Input", JOptionPane.ERROR_MESSAGE);
-            return getNumBaffles();
+        JRadioButton easy = new JRadioButton("Easy", false);
+        JRadioButton med = new JRadioButton("Medium");
+        JRadioButton hard = new JRadioButton("Hard");
+
+        ButtonGroup radios = new ButtonGroup();
+        radios.add(easy);
+        radios.add(med);
+        radios.add(hard);
+        med.setSelected(true);
+
+        panel.add(easy);
+        panel.add(med);
+        panel.add(hard);
+
+        int res = JOptionPane.showConfirmDialog(this, panel, "Difficulty", JOptionPane.DEFAULT_OPTION);
+        if (res == JOptionPane.OK_OPTION) {
+
+            if (easy.isSelected())
+                return EASY;
+            else if (med.isSelected())
+                return MEDIUM;
+
+            return HARD;
+        } else if (res == JOptionPane.CLOSED_OPTION) {
+            System.exit(0);
         }
 
-        return num;
+        return 0;
     }
 
     /**************************** Helper Classes ****************************/

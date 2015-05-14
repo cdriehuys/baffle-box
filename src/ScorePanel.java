@@ -41,6 +41,8 @@ public class ScorePanel extends JPanel {
     public void foundBaffle() {
         remainingBaffles--;
         bafflesLeftLabel.setText("Remaining Baffles: " + remainingBaffles);
+        if (remainingBaffles == 0)
+            getGame().win();
     }
 
     public void addScore(int amount) {

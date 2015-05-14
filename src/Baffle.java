@@ -2,12 +2,12 @@ import java.awt.*;
 
 public class Baffle extends ClickableArea {
 
-    private boolean hasBaffle, forwardBaffle;
+    private boolean hasBaffle, forwardBaffle, baffleVisible;
 
 
     public Baffle() {
 
-        hasBaffle = forwardBaffle = false;
+        hasBaffle = forwardBaffle = baffleVisible = false;
     }
 
     /************************** Overridden Methods **************************/
@@ -68,10 +68,17 @@ public class Baffle extends ClickableArea {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if (hasBaffle) {
+        if (hasBaffle && baffleVisible) {
             g.setColor(Color.BLACK);
             g.drawLine(0, forwardBaffle ? getHeight() : 0, getWidth(), forwardBaffle ? 0 : getHeight());
         }
+    }
+
+    @Override
+    public void onClick() {
+
+        if (hasBaffle)
+            baffleVisible = true;
     }
 
 

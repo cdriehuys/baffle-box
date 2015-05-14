@@ -8,11 +8,13 @@ import java.awt.event.MouseListener;
 
 public class ClickableArea extends JComponent {
 
-    private boolean mouse;
+    private boolean mouse, active;
 
     private Border defaultBorder, hoverBorder;
 
     public ClickableArea() {
+
+        active = true;
 
         defaultBorder = LineBorder.createBlackLineBorder();
         hoverBorder = BorderFactory.createBevelBorder(BevelBorder.LOWERED);
@@ -30,23 +32,26 @@ public class ClickableArea extends JComponent {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-
-                if (mouse)
+                if (active && mouse)
                     onClick();
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                setBorder(hoverBorder);
-                mouse = true;
-                repaint();
+                if (active) {
+                    setBorder(hoverBorder);
+                    mouse = true;
+                    repaint();
+                }
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                setBorder(defaultBorder);
-                mouse = false;
-                repaint();
+                if (active) {
+                    setBorder(defaultBorder);
+                    mouse = false;
+                    repaint();
+                }
             }
         });
 
@@ -82,6 +87,10 @@ public class ClickableArea extends JComponent {
             setBorder(b);
         repaint();
     }
+
+    public void activate() { active = true; }
+
+    public void deactivate() { active = false; }
 
     /**************************** Other Methods *****************************/
 

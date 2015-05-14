@@ -73,26 +73,18 @@ public class BaffleGrid extends JPanel {
                 try {
 
                     short beamDir = getBeamDir(perimVal);
-                    System.out.format("Firing beam from row %d, col %d in dir: %d%n", loc[0], loc[1], beamDir);
 
                     loc = propagateBeam(loc, beamDir);
 
-                    System.out.format("Entering while loop where loc is {%d, %d}", loc[0], loc[1]);
                     while (grid[loc[0]][loc[1]] instanceof Baffle) {
 
-                        System.out.format("Beam is now at row %d, col %d%n", loc[0], loc[1]);
                         ClickableArea area = grid[loc[0]][loc[1]];
-                        System.out.println("Beam dir going in: " + beamDir);
                         beamDir = area.getBeamDir(beamDir);
-                        System.out.println("Beam dir coming out: " + beamDir);
                         loc = propagateBeam(loc, beamDir);
                     }
 
-                    System.out.println("Exited while loop");
-
                     if (grid[loc[0]][loc[1]] instanceof NumberBox) {
                         NumberBox box = (NumberBox) grid[loc[0]][loc[1]];
-                        System.out.println("Beam ended up at perimeter box " + box.getVal());
                         highlightVal(perimVal, box.getVal());
                     }
 

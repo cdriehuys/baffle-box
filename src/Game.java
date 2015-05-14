@@ -23,9 +23,11 @@ public class Game extends JPanel {
 
         setLayout(new BorderLayout());
 
-        add(new BaffleGrid(10, 10, 5), BorderLayout.CENTER);
+        int numBaffles = getNumBaffles();
 
-        scorePanel = new ScorePanel(5);
+        add(new BaffleGrid(10, 10, numBaffles), BorderLayout.CENTER);
+
+        scorePanel = new ScorePanel(numBaffles);
         add(scorePanel, BorderLayout.NORTH);
 
         Timer drawTimer = new Timer(20, new DrawTimerListener());
@@ -46,6 +48,21 @@ public class Game extends JPanel {
     /**************************** Other Methods *****************************/
 
     public ScorePanel getScorePanel() { return scorePanel; }
+
+    private int getNumBaffles() {
+
+        int num;
+
+        try {
+            num = Integer.parseInt(JOptionPane.showInputDialog(this, "Enter the number of baffles to generate.",
+                    "How Many Baffles?", JOptionPane.QUESTION_MESSAGE));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid integer!", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return getNumBaffles();
+        }
+
+        return num;
+    }
 
     /**************************** Helper Classes ****************************/
 

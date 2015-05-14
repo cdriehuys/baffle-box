@@ -5,8 +5,8 @@ import java.awt.event.ActionListener;
 
 public class Game extends JPanel {
 
-    public static final int BAFFLE_PRIZE = 20;
-    public static final int FIRE_PENALTY = -3;
+    public static final int BAFFLE_PRIZE = 7;
+    public static final int FIRE_PENALTY = -1;
     public static final int WRONG_GUESS = -3;
 
     private ScorePanel scorePanel;

@@ -8,6 +8,9 @@ import java.awt.event.MouseListener;
 
 public class ClickableArea extends JComponent {
 
+    public static final Color INACTIVE_COLOR = Color.DARK_GRAY;
+
+
     private boolean mouse, active;
 
     private Border defaultBorder, hoverBorder;
@@ -88,9 +91,15 @@ public class ClickableArea extends JComponent {
         repaint();
     }
 
-    public void activate() { active = true; }
+    public void activate() {
+        active = true;
+        setBackground(UIManager.getColor("Panel.background"));
+    }
 
-    public void deactivate() { active = false; }
+    public void deactivate() {
+        active = false;
+        setBackground(INACTIVE_COLOR);
+    }
 
     /**************************** Other Methods *****************************/
 

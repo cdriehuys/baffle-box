@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class Baffle extends ClickableArea {
 
-    public static final Image FLAG = new ImageIcon("/images/red-flag-hi.png").getImage();
+    public static final Image FLAG = new ImageIcon("images/flag.png").getImage();
 
     private boolean hasBaffle, forwardBaffle, baffleVisible, flagged;
 
@@ -72,9 +72,7 @@ public class Baffle extends ClickableArea {
         super.paintComponent(g);
 
         if (flagged) {
-            g.setColor(Color.RED);
-            g.drawLine(0, 0, getWidth(), getHeight());
-            g.drawLine(0, getHeight(), getWidth(), 0);
+            g.drawImage(FLAG, 0, 0, getWidth(), getHeight(), null);
         }
 
         if (hasBaffle && baffleVisible) {

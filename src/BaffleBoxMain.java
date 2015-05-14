@@ -7,7 +7,7 @@ public class BaffleBoxMain extends JFrame {
 
     public BaffleBoxMain() {
 
-        DrawCanvas canvas = new DrawCanvas(GAME_WIDTH, GAME_HEIGHT);
+        Game canvas = new Game(GAME_WIDTH, GAME_HEIGHT);
 
         add(canvas);
 

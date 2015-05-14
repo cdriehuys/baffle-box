@@ -63,7 +63,9 @@ public class BaffleGrid extends JPanel {
     public void fireBeam(int perimVal) {
 
         try {
-            System.out.println("Firing beam in dir: " + getBeamDir(perimVal));
+            Integer[] loc = getPerimValLocation(perimVal);
+            if (loc != null)
+                System.out.format("Firing beam from row %d, col %d in dir: %d%n", loc[0], loc[1], getBeamDir(perimVal));
         } catch (NoSuchFieldException e) {
             System.out.println("Error firing beam.");
         }
@@ -88,21 +90,28 @@ public class BaffleGrid extends JPanel {
         return perimIndexes;
     }
 
+    private Integer[] getPerimValLocation(int val) {
+
+        for (Integer[] loc : getPerimIndexes())
+            if (((NumberBox)(grid[loc[0]][loc[1]])).getVal() == val)
+                return loc;
+
+        return null;
+    }
+
     private short getBeamDir(int perimVal) throws NoSuchFieldException {
 
-        for (Integer[] loc : getPerimIndexes()) {
-            if (((NumberBox)(grid[loc[0]][loc[1]])).getVal() == perimVal) {
-                if (loc[0] == 0)
-                    return BEAM_DOWN;
-                if (loc[0] == grid.length - 1)
-                    return BEAM_UP;
-                if (loc[1] == 0)
-                    return BEAM_RIGHT;
-                if (loc[1] == grid[0].length - 1)
-                    return BEAM_LEFT;
+        Integer[] loc = getPerimValLocation(perimVal);
 
-                throw new NoSuchFieldException("That box is not on the perimeter!");
-            }
+        if (loc != null) {
+            if (loc[0] == 0)
+                return BEAM_DOWN;
+            if (loc[0] == grid.length - 1)
+                return BEAM_UP;
+            if (loc[1] == 0)
+                return BEAM_RIGHT;
+            if (loc[1] == grid[0].length - 1)
+                return BEAM_LEFT;
         }
 
         throw new NoSuchFieldException("No NumberBox with that value exists.");

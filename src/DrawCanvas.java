@@ -17,7 +17,10 @@ public class DrawCanvas extends JPanel {
 
         setLayout(new BorderLayout());
 
-        add(new BaffleGrid(10, 10), BorderLayout.CENTER);
+        add(new BaffleGrid(10, 10, 5), BorderLayout.CENTER);
+
+        Timer drawTimer = new Timer(20, new DrawTimerListener());
+        drawTimer.start();
     }
 
     /************************** Overridden Methods **************************/

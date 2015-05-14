@@ -4,9 +4,10 @@ import java.awt.*;
 public class NumberBox extends ClickableArea {
 
     private static final Color NORMAL_COLOR = Color.BLACK;
-    private static final Color HIGHLIGHTED_COLOR = Color.RED;
+    private static final Color START_COLOR = Color.GREEN;
+    private static final Color END_COLOR = Color.RED;
 
-    private boolean highlighted;
+    private boolean highlighted, isEnd;
 
     private int val;
 
@@ -16,7 +17,7 @@ public class NumberBox extends ClickableArea {
 
         this.val = val;
 
-        highlighted = false;
+        highlighted = isEnd = false;
 
         setDefaultBorder(null);
     }
@@ -26,7 +27,14 @@ public class NumberBox extends ClickableArea {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        g.setColor(highlighted ? HIGHLIGHTED_COLOR : NORMAL_COLOR);
+        if (highlighted) {
+            g.setColor(isEnd ? END_COLOR : START_COLOR);
+            g.setFont(g.getFont().deriveFont(Font.BOLD));
+        } else {
+            g.setColor(NORMAL_COLOR);
+            g.setFont(g.getFont().deriveFont(Font.PLAIN));
+        }
+
         g.drawString(String.valueOf(val), getWidth() / 3, getHeight() / 2);
     }
 
@@ -45,7 +53,12 @@ public class NumberBox extends ClickableArea {
 
     /****************************** Mutators ********************************/
 
-    public void setHighlighted(boolean val) { highlighted = val; }
+    public void clearHighlight() { highlighted = false; }
+
+    public void setHighlighted(boolean val, boolean isEnd) {
+        highlighted = val;
+        this.isEnd = isEnd;
+    }
 
     /**************************** Other Methods *****************************/
 }

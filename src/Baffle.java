@@ -1,3 +1,5 @@
+import java.awt.*;
+
 public class Baffle extends ClickableArea {
 
     private boolean hasBaffle, forwardBaffle;
@@ -31,7 +33,7 @@ public class Baffle extends ClickableArea {
                         return BaffleGrid.BEAM_UP;
 
                     case BaffleGrid.BEAM_DOWN:
-                        return BaffleGrid.BEAM_RIGHT;
+                        return BaffleGrid.BEAM_LEFT;
 
                     case BaffleGrid.BEAM_LEFT:
                         return BaffleGrid.BEAM_DOWN;
@@ -62,10 +64,26 @@ public class Baffle extends ClickableArea {
         }
     }
 
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        if (hasBaffle) {
+            g.setColor(Color.BLACK);
+            g.drawLine(0, forwardBaffle ? getHeight() : 0, getWidth(), forwardBaffle ? 0 : getHeight());
+        }
+    }
+
 
     /****************************** Accessors *******************************/
 
     /****************************** Mutators ********************************/
 
     /**************************** Other Methods *****************************/
+
+    public void generateBaffle() {
+
+        hasBaffle = true;
+        forwardBaffle = Math.random() < .5;
+    }
 }

@@ -12,7 +12,7 @@ public class BaffleGrid extends JPanel {
     private ClickableArea[][] grid;
 
 
-    public BaffleGrid(int rows, int cols) {
+    public BaffleGrid(int rows, int cols, int numBaffles) {
 
         setPreferredSize(new Dimension(getWidth(), getHeight()));
 
@@ -51,6 +51,8 @@ public class BaffleGrid extends JPanel {
                 add(grid[row][col] != null ? grid[row][col] : new JPanel());
             }
         }
+
+        createBaffles(numBaffles);
     }
     /************************** Overridden Methods **************************/
 
@@ -77,7 +79,11 @@ public class BaffleGrid extends JPanel {
                     while (grid[loc[0]][loc[1]] instanceof Baffle) {
 
                         System.out.format("Beam is now at row %d, col %d%n", loc[0], loc[1]);
-                        loc = propagateBeam(loc, grid[loc[0]][loc[1]].getBeamDir(beamDir));
+                        ClickableArea area = grid[loc[0]][loc[1]];
+                        System.out.println("Beam dir going in: " + beamDir);
+                        beamDir = area.getBeamDir(beamDir);
+                        System.out.println("Beam dir coming out: " + beamDir);
+                        loc = propagateBeam(loc, beamDir);
                     }
 
                     System.out.println("Exited while loop");
@@ -85,7 +91,7 @@ public class BaffleGrid extends JPanel {
                     if (grid[loc[0]][loc[1]] instanceof NumberBox) {
                         NumberBox box = (NumberBox) grid[loc[0]][loc[1]];
                         System.out.println("Beam ended up at perimeter box " + box.getVal());
-                        highlightVal(box.getVal());
+                        highlightVal(perimVal, box.getVal());
                     }
 
                 } catch (NoSuchFieldException e) {
@@ -170,14 +176,36 @@ public class BaffleGrid extends JPanel {
         return new Integer[] {initialLoc[0], initialLoc[1] + 1};
     }
 
-    private void highlightVal(int perimVal) {
+    private void highlightVal(int startVal, int endVal) {
 
         for (Integer[] loc : getPerimIndexes()) {
             NumberBox box = (NumberBox)grid[loc[0]][loc[1]];
-            if (box.getVal() == perimVal)
-                box.setHighlighted(true);
+            if (box.getVal() == startVal)
+                box.setHighlighted(true, false);
+            else if (box.getVal() == endVal)
+                box.setHighlighted(true, true);
             else
-                box.setHighlighted(false);
+                box.clearHighlight();
+        }
+    }
+
+    private void createBaffles(int numBaffles) {
+
+        ArrayList<int[]> possibleLocations = new ArrayList<int[]>();
+
+        for (int row = 1; row < grid.length - 1; row++)
+            for (int col = 1; col < grid[0].length - 1; col++)
+                possibleLocations.add(new int[] {row, col});
+
+        for (int i = 0; i < numBaffles; i++) {
+
+            int index = (int)(Math.random() * possibleLocations.size());
+
+            int[] loc = possibleLocations.get(index);
+
+            ((Baffle)(grid[loc[0]][loc[1]])).generateBaffle();
+
+            possibleLocations.remove(index);
         }
     }
 }

@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.*;
 
 public class NumberBox extends ClickableArea {
@@ -22,7 +23,15 @@ public class NumberBox extends ClickableArea {
         g.drawString(String.valueOf(val), getWidth() / 3, getHeight() / 2);
     }
 
+    @Override
+    public void onClick() {
+        JOptionPane.showMessageDialog(getParent(), "Would you like to fire a beam from box " + val + "?", "Fire?",
+                JOptionPane.QUESTION_MESSAGE);
+    }
+
     /****************************** Accessors *******************************/
+
+    public int getVal() { return val; }
 
     /****************************** Mutators ********************************/
 

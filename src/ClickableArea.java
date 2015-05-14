@@ -30,6 +30,9 @@ public class ClickableArea extends JComponent {
 
             @Override
             public void mouseReleased(MouseEvent e) {
+
+                if (mouse)
+                    onClick();
             }
 
             @Override
@@ -79,4 +82,8 @@ public class ClickableArea extends JComponent {
     }
 
     /**************************** Other Methods *****************************/
+
+    public void onClick() {
+        JOptionPane.showMessageDialog(getParent(), "I was clicked!", "Clicked", JOptionPane.INFORMATION_MESSAGE);
+    }
 }

@@ -80,6 +80,10 @@ public class Baffle extends ClickableArea {
 
         if (hasBaffle) {
             baffleVisible = true;
+            getBaffleGrid().getGame().getScorePanel().addScore(Game.BAFFLE_PRIZE);
+            getBaffleGrid().getGame().getScorePanel().foundBaffle();
+        } else {
+            getBaffleGrid().getGame().getScorePanel().addScore(Game.WRONG_GUESS);
         }
     }
 

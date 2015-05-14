@@ -43,6 +43,7 @@ public class NumberBox extends ClickableArea {
         if (JOptionPane.showConfirmDialog(getParent(), "Would you like to fire a beam from box " + val + "?", "Fire?",
                 JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION) {
 
+            getBaffleGrid().getGame().getScorePanel().addScore(Game.FIRE_PENALTY);
             getBaffleGrid().fireBeam(val);
         }
     }

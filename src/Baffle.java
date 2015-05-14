@@ -101,9 +101,7 @@ public class Baffle extends ClickableArea {
 
     @Override
     public void onRightClick() {
-
         flagged = !flagged;
-        System.out.println("Flagged is now: " + flagged);
     }
 
 

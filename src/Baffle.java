@@ -98,5 +98,6 @@ public class Baffle extends ClickableArea {
 
         hasBaffle = true;
         forwardBaffle = Math.random() < .5;
+        setInactiveColor(Color.DARK_GRAY);
     }
 }

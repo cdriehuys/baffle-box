@@ -8,16 +8,20 @@ import java.awt.event.MouseListener;
 
 public class ClickableArea extends JComponent {
 
-    public static final Color INACTIVE_COLOR = Color.DARK_GRAY;
+    public static final Color INACTIVE_COLOR = Color.LIGHT_GRAY;
 
 
     private boolean mouse, active;
 
     private Border defaultBorder, hoverBorder;
 
+    private Color inactiveColor;
+
     public ClickableArea() {
 
         active = true;
+
+        inactiveColor = INACTIVE_COLOR;
 
         defaultBorder = LineBorder.createBlackLineBorder();
         hoverBorder = BorderFactory.createBevelBorder(BevelBorder.LOWERED);
@@ -98,8 +102,10 @@ public class ClickableArea extends JComponent {
 
     public void deactivate() {
         active = false;
-        setBackground(INACTIVE_COLOR);
+        setBackground(inactiveColor);
     }
+
+    public void setInactiveColor(Color c) { inactiveColor = c; }
 
     /**************************** Other Methods *****************************/
 

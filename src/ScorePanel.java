@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ScorePanel extends JPanel {
 
@@ -15,13 +17,24 @@ public class ScorePanel extends JPanel {
         scoreLabel = new JLabel("Score: " + score);
         bafflesLeftLabel = new JLabel("Remaining Baffles: " + remainingBaffles);
 
+        JButton historyBtn = new JButton("History");
+        historyBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getGame().showHistory();
+            }
+        });
+
         add(scoreLabel);
         add(bafflesLeftLabel);
+        add(historyBtn);
     }
 
     /************************** Overridden Methods **************************/
 
     /****************************** Accessors *******************************/
+
+    public Game getGame() { return (Game)getParent(); }
 
     /****************************** Mutators ********************************/
 

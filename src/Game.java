@@ -9,6 +9,9 @@ public class Game extends JPanel {
     public static final int FIRE_PENALTY = -1;
     public static final int WRONG_GUESS = -3;
 
+
+    private HistoryDialog history;
+
     private ScorePanel scorePanel;
 
     /**
@@ -30,6 +33,8 @@ public class Game extends JPanel {
         scorePanel = new ScorePanel(numBaffles);
         add(scorePanel, BorderLayout.NORTH);
 
+        history = new HistoryDialog(null);
+
         Timer drawTimer = new Timer(20, new DrawTimerListener());
         drawTimer.start();
     }
@@ -48,6 +53,15 @@ public class Game extends JPanel {
     /**************************** Other Methods *****************************/
 
     public ScorePanel getScorePanel() { return scorePanel; }
+
+    public void showHistory() {
+        if (!history.isVisible())
+            history.setVisible(true);
+    }
+
+    public void logMove(String move) {
+        history.logMove(move);
+    }
 
     private int getNumBaffles() {
 

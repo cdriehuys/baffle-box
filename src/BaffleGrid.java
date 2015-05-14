@@ -86,6 +86,7 @@ public class BaffleGrid extends JPanel {
                     if (grid[loc[0]][loc[1]] instanceof NumberBox) {
                         NumberBox box = (NumberBox) grid[loc[0]][loc[1]];
                         highlightVal(perimVal, box.getVal());
+                        getGame().logMove(String.format("Fired from %d, ended up at %d", perimVal, box.getVal()));
                     }
 
                 } catch (NoSuchFieldException e) {

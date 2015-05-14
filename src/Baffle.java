@@ -76,9 +76,11 @@ public class Baffle extends ClickableArea {
 
     @Override
     public void onClick() {
+        super.onClick();
 
-        if (hasBaffle)
+        if (hasBaffle) {
             baffleVisible = true;
+        }
     }
 
 

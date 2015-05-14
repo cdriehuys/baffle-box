@@ -82,8 +82,11 @@ public class BaffleGrid extends JPanel {
 
                     System.out.println("Exited while loop");
 
-                    if (grid[loc[0]][loc[1]] instanceof NumberBox)
-                        System.out.println("Beam ended up at perimeter box " + ((NumberBox)(grid[loc[0]][loc[1]])).getVal());
+                    if (grid[loc[0]][loc[1]] instanceof NumberBox) {
+                        NumberBox box = (NumberBox) grid[loc[0]][loc[1]];
+                        System.out.println("Beam ended up at perimeter box " + box.getVal());
+                        highlightVal(box.getVal());
+                    }
 
                 } catch (NoSuchFieldException e) {
 
@@ -165,5 +168,16 @@ public class BaffleGrid extends JPanel {
         }
 
         return new Integer[] {initialLoc[0], initialLoc[1] + 1};
+    }
+
+    private void highlightVal(int perimVal) {
+
+        for (Integer[] loc : getPerimIndexes()) {
+            NumberBox box = (NumberBox)grid[loc[0]][loc[1]];
+            if (box.getVal() == perimVal)
+                box.setHighlighted(true);
+            else
+                box.setHighlighted(false);
+        }
     }
 }

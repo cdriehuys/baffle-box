@@ -1,0 +1,71 @@
+public class Baffle extends ClickableArea {
+
+    private boolean hasBaffle, forwardBaffle;
+
+
+    public Baffle() {
+
+        hasBaffle = forwardBaffle = false;
+    }
+
+    /************************** Overridden Methods **************************/
+
+    @Override
+    public short getBeamDir(short enterDir) {
+
+        if (enterDir != BaffleGrid.BEAM_DOWN
+                && enterDir != BaffleGrid.BEAM_LEFT
+                && enterDir != BaffleGrid.BEAM_RIGHT
+                && enterDir != BaffleGrid.BEAM_UP) {
+
+            throw new IllegalArgumentException("enterDir must be one of the predefined BaffleGrid.BEAM_--- constants.");
+        }
+
+        if (hasBaffle) {
+
+            if (forwardBaffle) {
+
+                switch (enterDir) {
+
+                    case BaffleGrid.BEAM_RIGHT:
+                        return BaffleGrid.BEAM_UP;
+
+                    case BaffleGrid.BEAM_DOWN:
+                        return BaffleGrid.BEAM_RIGHT;
+
+                    case BaffleGrid.BEAM_LEFT:
+                        return BaffleGrid.BEAM_DOWN;
+                }
+
+                return BaffleGrid.BEAM_RIGHT;
+
+            } else {
+
+                switch (enterDir) {
+
+                    case BaffleGrid.BEAM_RIGHT:
+                        return BaffleGrid.BEAM_DOWN;
+
+                    case BaffleGrid.BEAM_DOWN:
+                        return BaffleGrid.BEAM_RIGHT;
+
+                    case BaffleGrid.BEAM_LEFT:
+                        return BaffleGrid.BEAM_UP;
+                }
+
+                return BaffleGrid.BEAM_LEFT;
+            }
+
+        } else {
+
+            return enterDir;
+        }
+    }
+
+
+    /****************************** Accessors *******************************/
+
+    /****************************** Mutators ********************************/
+
+    /**************************** Other Methods *****************************/
+}

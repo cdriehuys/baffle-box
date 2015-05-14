@@ -43,7 +43,7 @@ public class BaffleGrid extends JPanel {
                     } else if (col == grid[0].length - 1) {
                         temp = new NumberBox(cols + rows + row - 1);
                     } else {
-                        temp = new ClickableArea();
+                        temp = new Baffle();
                     }
                 }
 
@@ -62,13 +62,38 @@ public class BaffleGrid extends JPanel {
 
     public void fireBeam(int perimVal) {
 
-        try {
             Integer[] loc = getPerimValLocation(perimVal);
-            if (loc != null)
-                System.out.format("Firing beam from row %d, col %d in dir: %d%n", loc[0], loc[1], getBeamDir(perimVal));
-        } catch (NoSuchFieldException e) {
-            System.out.println("Error firing beam.");
-        }
+
+            if (loc != null) {
+
+                try {
+
+                    short beamDir = getBeamDir(perimVal);
+                    System.out.format("Firing beam from row %d, col %d in dir: %d%n", loc[0], loc[1], beamDir);
+
+                    loc = propagateBeam(loc, beamDir);
+
+                    System.out.format("Entering while loop where loc is {%d, %d}", loc[0], loc[1]);
+                    while (grid[loc[0]][loc[1]] instanceof Baffle) {
+
+                        System.out.format("Beam is now at row %d, col %d%n", loc[0], loc[1]);
+                        loc = propagateBeam(loc, grid[loc[0]][loc[1]].getBeamDir(beamDir));
+                    }
+
+                    System.out.println("Exited while loop");
+
+                    if (grid[loc[0]][loc[1]] instanceof NumberBox)
+                        System.out.println("Beam ended up at perimeter box " + ((NumberBox)(grid[loc[0]][loc[1]])).getVal());
+
+                } catch (NoSuchFieldException e) {
+
+                    System.out.println("Error finding beam direction.");
+                    e.printStackTrace();
+                }
+            } else {
+
+                System.out.println("Error firing beam.");
+            }
     }
 
     private ArrayList<Integer[]> getPerimIndexes() {
@@ -115,5 +140,30 @@ public class BaffleGrid extends JPanel {
         }
 
         throw new NoSuchFieldException("No NumberBox with that value exists.");
+    }
+
+    private Integer[] propagateBeam(Integer[] initialLoc, short beamDir) {
+
+        if (beamDir != BEAM_DOWN
+                && beamDir != BEAM_LEFT
+                && beamDir != BEAM_RIGHT
+                && beamDir != BEAM_UP) {
+
+            throw new IllegalArgumentException("beam dir must be one of the predefined beam direction constants.");
+        }
+
+        switch (beamDir) {
+
+            case BEAM_DOWN:
+                return new Integer[] {initialLoc[0] + 1, initialLoc[1]};
+
+            case BEAM_UP:
+                return new Integer[] {initialLoc[0] - 1, initialLoc[1]};
+
+            case BEAM_LEFT:
+                return new Integer[] {initialLoc[0], initialLoc[1] - 1};
+        }
+
+        return new Integer[] {initialLoc[0], initialLoc[1] + 1};
     }
 }

@@ -88,4 +88,8 @@ public class ClickableArea extends JComponent {
     public void onClick() {
         JOptionPane.showMessageDialog(getParent(), "I was clicked!", "Clicked", JOptionPane.INFORMATION_MESSAGE);
     }
+
+    public short getBeamDir(short originalDir) {
+        return originalDir;
+    }
 }

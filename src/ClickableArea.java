@@ -39,8 +39,14 @@ public class ClickableArea extends JComponent {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                if (active && mouse)
-                    onClick();
+
+                if (active && mouse) {
+
+                    if (e.getButton() == 1)
+                        onLeftClick();
+                    else if (e.getButton() == 3)
+                        onRightClick();
+                }
             }
 
             @Override
@@ -109,9 +115,11 @@ public class ClickableArea extends JComponent {
 
     /**************************** Other Methods *****************************/
 
-    public void onClick() {
+    public void onLeftClick() {
         deactivate();
     }
+
+    public void onRightClick() {}
 
     public short getBeamDir(short originalDir) {
         return originalDir;

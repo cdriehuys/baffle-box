@@ -1,13 +1,16 @@
+import javax.swing.*;
 import java.awt.*;
 
 public class Baffle extends ClickableArea {
 
-    private boolean hasBaffle, forwardBaffle, baffleVisible;
+    public static final Image FLAG = new ImageIcon("/images/red-flag-hi.png").getImage();
+
+    private boolean hasBaffle, forwardBaffle, baffleVisible, flagged;
 
 
     public Baffle() {
 
-        hasBaffle = forwardBaffle = baffleVisible = false;
+        hasBaffle = forwardBaffle = baffleVisible = flagged = false;
     }
 
     /************************** Overridden Methods **************************/
@@ -68,6 +71,12 @@ public class Baffle extends ClickableArea {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        if (flagged) {
+            g.setColor(Color.RED);
+            g.drawLine(0, 0, getWidth(), getHeight());
+            g.drawLine(0, getHeight(), getWidth(), 0);
+        }
+
         if (hasBaffle && baffleVisible) {
             g.setColor(Color.BLACK);
             g.drawLine(0, forwardBaffle ? getHeight() : 0, getWidth(), forwardBaffle ? 0 : getHeight());
@@ -75,16 +84,26 @@ public class Baffle extends ClickableArea {
     }
 
     @Override
-    public void onClick() {
-        super.onClick();
+    public void onLeftClick() {
 
-        if (hasBaffle) {
-            baffleVisible = true;
-            getBaffleGrid().getGame().getScorePanel().addScore(Game.BAFFLE_PRIZE);
-            getBaffleGrid().getGame().getScorePanel().foundBaffle();
-        } else {
-            getBaffleGrid().getGame().getScorePanel().addScore(Game.WRONG_GUESS);
+        if (!flagged) {
+            super.onLeftClick();
+
+            if (hasBaffle) {
+                baffleVisible = true;
+                getBaffleGrid().getGame().getScorePanel().addScore(Game.BAFFLE_PRIZE);
+                getBaffleGrid().getGame().getScorePanel().foundBaffle();
+            } else {
+                getBaffleGrid().getGame().getScorePanel().addScore(Game.WRONG_GUESS);
+            }
         }
+    }
+
+    @Override
+    public void onRightClick() {
+
+        flagged = !flagged;
+        System.out.println("Flagged is now: " + flagged);
     }
 
 
@@ -98,6 +117,6 @@ public class Baffle extends ClickableArea {
 
         hasBaffle = true;
         forwardBaffle = Math.random() < .5;
-        setInactiveColor(Color.DARK_GRAY);
+        setInactiveColor(Color.GRAY);
     }
 }

@@ -39,7 +39,7 @@ public class NumberBox extends ClickableArea {
     }
 
     @Override
-    public void onClick() {
+    public void onLeftClick() {
         if (JOptionPane.showConfirmDialog(getParent(), "Would you like to fire a beam from box " + val + "?", "Fire?",
                 JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION) {
 

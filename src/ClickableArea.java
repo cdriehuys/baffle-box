@@ -1,5 +1,6 @@
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -7,15 +8,16 @@ import java.awt.event.MouseListener;
 
 public class ClickableArea extends JComponent {
 
-    public ClickableArea(int width, int height) {
+    private boolean mouse;
 
-        Dimension size = new Dimension(width, height);
+    private Border defaultBorder, hoverBorder;
 
-        setSize(size);
-        setPreferredSize(size);
-        setBounds(getX(), getY(), width, height);
+    public ClickableArea() {
 
-        setBorder(LineBorder.createBlackLineBorder());
+        defaultBorder = LineBorder.createBlackLineBorder();
+        hoverBorder = BorderFactory.createBevelBorder(BevelBorder.LOWERED);
+
+        setBorder(defaultBorder);
 
         this.addMouseListener(new MouseListener() {
             @Override
@@ -32,16 +34,20 @@ public class ClickableArea extends JComponent {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+                setBorder(hoverBorder);
+                mouse = true;
                 repaint();
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                setBorder(LineBorder.createBlackLineBorder());
+                setBorder(defaultBorder);
+                mouse = false;
                 repaint();
             }
         });
+
+        mouse = false;
     }
 
     /************************** Overridden Methods **************************/
@@ -52,12 +58,25 @@ public class ClickableArea extends JComponent {
 
         g.setColor(getBackground());
         g.fillRect(0, 0, getWidth(), getHeight());
-        //System.out.println("Painting ClickableArea");
     }
 
     /****************************** Accessors *******************************/
 
     /****************************** Mutators ********************************/
+
+    public void setDefaultBorder(Border b) {
+        defaultBorder = b;
+        if (!mouse)
+            setBorder(b);
+        repaint();
+    }
+
+    public void setHoverBorder(Border b) {
+        hoverBorder = b;
+        if (mouse)
+            setBorder(b);
+        repaint();
+    }
 
     /**************************** Other Methods *****************************/
 }

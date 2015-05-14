@@ -15,19 +15,9 @@ public class DrawCanvas extends JPanel {
         // set the preferred size of the panel
         setPreferredSize(new Dimension(width, height));
 
-        setLayout(new GridLayout(2, 3));
+        setLayout(new BorderLayout());
 
-        add(new ClickableArea(50, 50));
-        add(new ClickableArea(50, 50));
-        add(new ClickableArea(50, 50));
-        add(new ClickableArea(50, 50));
-        add(new ClickableArea(50, 50));
-        add(new ClickableArea(50, 50));
-
-        //System.out.format("ClickableArea at (%d, %d) with dimensions %dx%d%n", ca.getX(), ca.getY(), ca.getWidth(), ca.getHeight());
-
-        Timer drawTimer = new Timer(20, new DrawTimerListener());
-        drawTimer.start();
+        add(new BaffleGrid(10, 10), BorderLayout.CENTER);
     }
 
     /************************** Overridden Methods **************************/

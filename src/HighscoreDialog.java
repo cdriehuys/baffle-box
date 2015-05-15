@@ -1,11 +1,8 @@
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Vector;
 
 public class HighscoreDialog extends JDialog {
-
-    private static final DefaultTableModel nonEditableModel;
 
     private static final Vector<String> colNames;
 
@@ -13,12 +10,6 @@ public class HighscoreDialog extends JDialog {
     private HighscoreDB db;
 
     static {
-
-        nonEditableModel = new DefaultTableModel() {
-
-            @Override
-            public boolean isCellEditable(int row, int col) { return false; }
-        };
 
         colNames = new Vector<String>();
         colNames.add("Name");

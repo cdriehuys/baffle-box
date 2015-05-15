@@ -26,6 +26,7 @@ public class HighscoreDB {
 
         try {
 
+            System.out.print("Adding score...");
             PreparedStatement prep = conn.prepareStatement(String.format("INSERT INTO %s VALUES (?, ?, ?);", SCORE_TABLE));
 
             prep.setString(1, name);
@@ -37,9 +38,11 @@ public class HighscoreDB {
             prep.executeBatch();
             conn.setAutoCommit(true);
 
+            System.out.println("Success");
             return true;
 
         } catch (SQLException e) {
+            System.out.println("Failed to add score");
             return false;
         }
     }

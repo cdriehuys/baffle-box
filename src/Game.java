@@ -17,6 +17,10 @@ public class Game extends JPanel {
     public static final int HARD_BAFFLES = 20;
 
 
+    private int gameMode;
+
+    private HighscoreDB scoreDB;
+
     private HistoryDialog history;
 
     private ScorePanel scorePanel;
@@ -32,6 +36,8 @@ public class Game extends JPanel {
         setPreferredSize(new Dimension(width, height));
 
         setLayout(new BorderLayout());
+
+        scoreDB = new HighscoreDB();
 
         initialize();
 
@@ -60,6 +66,8 @@ public class Game extends JPanel {
     }
 
     public void win() {
+
+        doHighScores();
 
         final JDialog dialog = new JDialog();
 
@@ -157,11 +165,11 @@ public class Game extends JPanel {
 
     private void initialize() {
 
-        int difficulty = getDifficulty();
+        gameMode = getDifficulty();
 
         int numBaffles;
 
-        switch (difficulty) {
+        switch (gameMode) {
             case EASY:
                 numBaffles = EASY_BAFFLES;
                 break;
@@ -194,6 +202,16 @@ public class Game extends JPanel {
         history = null;
 
         revalidate();
+    }
+
+    private void doHighScores() {
+
+        String name = JOptionPane.showInputDialog(this, "Enter your name", "Enter Name", JOptionPane.QUESTION_MESSAGE);
+
+        if (name != null) {
+            scoreDB.addScore(name, scorePanel.getScore(), gameMode);
+            new HighscoreDialog(null, gameMode);
+        }
     }
 
     /**************************** Helper Classes ****************************/

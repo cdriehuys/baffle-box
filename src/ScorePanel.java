@@ -36,6 +36,8 @@ public class ScorePanel extends JPanel {
 
     public Game getGame() { return (Game)getParent(); }
 
+    public int getScore() { return score; }
+
     /****************************** Mutators ********************************/
 
     public void foundBaffle() {

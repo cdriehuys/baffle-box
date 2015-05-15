@@ -1,8 +1,11 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Vector;
 
 public class HighscoreDialog extends JDialog {
+
+    private static final DefaultTableModel nonEditableModel;
 
     private static final Vector<String> colNames;
 
@@ -11,17 +14,23 @@ public class HighscoreDialog extends JDialog {
 
     static {
 
+        nonEditableModel = new DefaultTableModel() {
+
+            @Override
+            public boolean isCellEditable(int row, int col) { return false; }
+        };
+
         colNames = new Vector<String>();
         colNames.add("Name");
         colNames.add("Score");
     }
 
-    public HighscoreDialog(Frame parent) {
+    public HighscoreDialog(Frame parent, int currentGameMode) {
         super(parent);
 
         db = new HighscoreDB();
 
-        initialize();
+        initialize(currentGameMode);
     }
 
     /************************** Overridden Methods **************************/
@@ -33,15 +42,9 @@ public class HighscoreDialog extends JDialog {
     /**************************** Other Methods *****************************/
 
     private JTable createScoreTable(int difficulty) {
-        Vector<Vector<Object>> scores = db.getScores(difficulty);
 
-        for (Vector<Object> row : scores) {
-            for (Object o : row)
-                System.out.print(o + " ");
-            System.out.println();
-        }
-        JTable t = new JTable(scores, colNames);
-        System.out.format("Rows: %d, Columns: %d%n", t.getRowCount(), t.getColumnCount());
+        JTable t = new JTable(db.getScores(difficulty), colNames);
+        t.setEnabled(false);
 
         return t;
     }
@@ -56,7 +59,7 @@ public class HighscoreDialog extends JDialog {
         return scroll;
     }
 
-    private void initialize() {
+    private void initialize(int gameMode) {
 
         JTabbedPane tabPane = new JTabbedPane();
 
@@ -72,15 +75,22 @@ public class HighscoreDialog extends JDialog {
         tabPane.addTab("Easy", easy);
         tabPane.addTab("Medium", med);
         tabPane.addTab("Hard", hard);
-        tabPane.setSelectedIndex(1);
+
+        if (gameMode == Game.EASY)
+            tabPane.setSelectedIndex(0);
+        else if (gameMode == Game.MEDIUM)
+            tabPane.setSelectedIndex(1);
+        else if (gameMode == Game.HARD)
+            tabPane.setSelectedIndex(2);
 
         add(tabPane);
 
-        setSize(600, 600);
+        pack();
 
         setTitle("Highscores");
         setLocationRelativeTo(getParent());
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setModal(true);
         setVisible(true);
     }
 }

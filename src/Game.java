@@ -33,29 +33,7 @@ public class Game extends JPanel {
 
         setLayout(new BorderLayout());
 
-        int difficulty = getDifficulty();
-
-        int numBaffles;
-
-        switch (difficulty) {
-            case EASY:
-                numBaffles = EASY_BAFFLES;
-                break;
-
-            case HARD:
-                numBaffles = HARD_BAFFLES;
-                break;
-
-            default:
-                numBaffles = MEDIUM_BAFFLES;
-        }
-
-        add(new BaffleGrid(10, 10, numBaffles), BorderLayout.CENTER);
-
-        scorePanel = new ScorePanel(numBaffles);
-        add(scorePanel, BorderLayout.NORTH);
-
-        history = new HistoryDialog(null);
+        initialize();
 
         Timer drawTimer = new Timer(20, new DrawTimerListener());
         drawTimer.start();
@@ -83,7 +61,58 @@ public class Game extends JPanel {
 
     public void win() {
 
-        JOptionPane.showMessageDialog(this, "Congratulations! You won!", "Winner", JOptionPane.PLAIN_MESSAGE);
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        JPanel text = new JPanel();
+        text.setAlignmentX(Component.RIGHT_ALIGNMENT);
+
+        JLabel message = new JLabel("Congratulations! You won!");
+
+        text.add(Box.createRigidArea(new Dimension(100, 0)));
+        text.add(message);
+        text.add(Box.createRigidArea(new Dimension(100, 0)));
+
+        JPanel buttons = new JPanel();
+        buttons.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
+
+        JButton quit = new JButton("Quit");
+        quit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
+        JButton play = new JButton("Play Again");
+        play.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                initialize();
+            }
+        });
+
+        buttons.add(quit);
+        buttons.add(Box.createRigidArea(new Dimension(5, 0)));
+        buttons.add(play);
+        buttons.add(Box.createRigidArea(new Dimension(15, 0)));
+
+        panel.add(text);
+        panel.add(Box.createRigidArea(new Dimension(0, 30)));
+        panel.add(buttons);
+
+        JDialog dialog = new JDialog();
+
+        dialog.add(panel);
+        dialog.pack();
+
+        dialog.setModal(true);
+        dialog.setTitle("You Won!");
+        dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        dialog.setLocationRelativeTo(this);
+
+        dialog.setVisible(true);
     }
 
     public void logMove(String move) {
@@ -122,6 +151,37 @@ public class Game extends JPanel {
         }
 
         return 0;
+    }
+
+    private void initialize() {
+
+        removeAll();
+
+        int difficulty = getDifficulty();
+
+        int numBaffles;
+
+        switch (difficulty) {
+            case EASY:
+                numBaffles = EASY_BAFFLES;
+                break;
+
+            case HARD:
+                numBaffles = HARD_BAFFLES;
+                break;
+
+            default:
+                numBaffles = MEDIUM_BAFFLES;
+        }
+
+        add(new BaffleGrid(10, 10, numBaffles), BorderLayout.CENTER);
+
+        scorePanel = new ScorePanel(numBaffles);
+        add(scorePanel, BorderLayout.NORTH);
+
+        history = new HistoryDialog(null);
+
+        revalidate();
     }
 
     /**************************** Helper Classes ****************************/

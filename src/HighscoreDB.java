@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.Vector;
 
 public class HighscoreDB {
 
@@ -20,32 +21,6 @@ public class HighscoreDB {
     /****************************** Mutators ********************************/
 
     /**************************** Other Methods *****************************/
-
-    public static void main(String[] args) {
-
-        HighscoreDB db = new HighscoreDB();
-        /*
-        db.addScore("Chathan", 33, 2);
-        db.addScore("Dad", 22, 2);
-        db.addScore("Noah", 25, 2);
-        */
-
-        ResultSet rs = db.getScores(1);
-
-        if (rs != null) {
-
-            System.out.println("Scores for difficulty 1:");
-
-            try {
-                while (rs.next())
-                    System.out.format("\t%s: %d%n", rs.getString("name"), rs.getInt("score"));
-
-            } catch (SQLException e) {
-
-                System.out.println("Error reading results.");
-            }
-        }
-    }
 
     public boolean addScore(String name, int score, int difficulty) {
 
@@ -69,13 +44,20 @@ public class HighscoreDB {
         }
     }
 
-    public ResultSet getScores(int difficulty) {
+    public Vector<Object[]> getScores(int difficulty) {
 
         try {
 
             Statement stat = conn.createStatement();
-            return stat.executeQuery(String.format("SELECT * FROM %s WHERE difficulty = %d ORDER BY score DESC",
+            ResultSet rs = stat.executeQuery(String.format("SELECT * FROM %s WHERE difficulty = %d ORDER BY score DESC",
                     SCORE_TABLE, difficulty));
+
+            Vector<Object[]> scores = new Vector<Object[]>();
+
+            while (rs.next())
+                scores.add(new Object[] {rs.getString("name"), rs.getInt("score")});
+
+            return scores;
 
         } catch (SQLException e) {
             return null;

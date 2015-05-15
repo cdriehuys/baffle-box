@@ -1,12 +1,15 @@
-import javax.swing.*;
 import java.awt.*;
 
 public class Baffle extends ClickableArea {
 
-    public static final Image FLAG = new ImageIcon("images/flag.png").getImage();
+    public static final Image FLAG;
 
     private boolean hasBaffle, forwardBaffle, baffleVisible, flagged;
 
+
+    static {
+        FLAG = Toolkit.getDefaultToolkit().createImage(Baffle.class.getResource("images/flag.png"));
+    }
 
     /** Default constructor **/
     public Baffle() {

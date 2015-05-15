@@ -61,7 +61,7 @@ public class ScorePanel extends JPanel {
      */
     public void foundBaffle() {
         remainingBaffles--;
-        score += Game.BAFFLE_PRIZE;
+        addScore(Game.BAFFLE_PRIZE);
         bafflesLeftLabel.setText("Remaining Baffles: " + remainingBaffles);
         if (remainingBaffles == 0)
             getGame().win();
@@ -74,6 +74,7 @@ public class ScorePanel extends JPanel {
     public void addScore(int amount) {
         score += amount;
         scoreLabel.setText("Score: " + score);
+        repaint();
     }
 
     /**************************** Other Methods *****************************/

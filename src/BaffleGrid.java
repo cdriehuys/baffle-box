@@ -131,6 +131,8 @@ public class BaffleGrid extends JPanel {
                     highlightVal(perimVal, box.getVal());
                     // log the shot in the history
                     getGame().logMove(String.format("Fired from %d, ended up at %d", perimVal, box.getVal()));
+                    // assess point penalty for firing shots
+                    getGame().getScorePanel().addScore(Game.FIRE_PENALTY);
                 }
 
             } catch (NoSuchFieldException e) {

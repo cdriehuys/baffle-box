@@ -52,7 +52,6 @@ public class NumberBox extends ClickableArea {
      */
     @Override
     public void onLeftClick() {
-        getBaffleGrid().getGame().getScorePanel().addScore(Game.FIRE_PENALTY);
         getBaffleGrid().fireBeam(val);
     }
 

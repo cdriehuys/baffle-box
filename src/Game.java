@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 public class Game extends JPanel {
 
@@ -37,6 +38,9 @@ public class Game extends JPanel {
 
         // create a new border layout
         setLayout(new BorderLayout());
+
+        // create menu bar
+        createMenubar();
 
         // connect to the highscores database
         scoreDB = new HighscoreDB();
@@ -144,6 +148,41 @@ public class Game extends JPanel {
      */
     public void logMove(String move) {
         history.logMove(move);
+    }
+
+    public JMenuBar createMenubar() {
+
+        // create new menu bar
+        JMenuBar menu = new JMenuBar();
+
+        // make the file menu
+        JMenu file = new JMenu("File");
+        // set its shortcut to 'F'
+        file.setMnemonic(KeyEvent.VK_F);
+
+        JMenuItem newGame = new JMenuItem("New Game", KeyEvent.VK_N);
+        newGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                destroy();
+                initialize();
+            }
+        });
+
+        JMenuItem exit = new JMenuItem("Exit", KeyEvent.VK_E);
+        exit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
+        file.add(newGame);
+        file.add(exit);
+
+        menu.add(file);
+
+        return menu;
     }
 
     /**

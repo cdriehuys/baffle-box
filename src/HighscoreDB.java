@@ -44,7 +44,7 @@ public class HighscoreDB {
         }
     }
 
-    public Vector<Object[]> getScores(int difficulty) {
+    public Vector<Vector<Object>> getScores(int difficulty) {
 
         try {
 
@@ -52,10 +52,14 @@ public class HighscoreDB {
             ResultSet rs = stat.executeQuery(String.format("SELECT * FROM %s WHERE difficulty = %d ORDER BY score DESC",
                     SCORE_TABLE, difficulty));
 
-            Vector<Object[]> scores = new Vector<Object[]>();
+            Vector<Vector<Object>> scores = new Vector<Vector<Object>>();
 
-            while (rs.next())
-                scores.add(new Object[] {rs.getString("name"), rs.getInt("score")});
+            while (rs.next()) {
+                Vector<Object> row = new Vector<Object>();
+                row.add(rs.getString("name"));
+                row.add(rs.getInt("score"));
+                scores.add(row);
+            }
 
             return scores;
 

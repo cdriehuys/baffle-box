@@ -61,6 +61,8 @@ public class Game extends JPanel {
 
     public void win() {
 
+        final JDialog dialog = new JDialog();
+
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
@@ -89,6 +91,8 @@ public class Game extends JPanel {
         play.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                dialog.dispose();
+                destroy();
                 initialize();
             }
         });
@@ -101,8 +105,6 @@ public class Game extends JPanel {
         panel.add(text);
         panel.add(Box.createRigidArea(new Dimension(0, 30)));
         panel.add(buttons);
-
-        JDialog dialog = new JDialog();
 
         dialog.add(panel);
         dialog.pack();
@@ -155,8 +157,6 @@ public class Game extends JPanel {
 
     private void initialize() {
 
-        removeAll();
-
         int difficulty = getDifficulty();
 
         int numBaffles;
@@ -180,6 +180,18 @@ public class Game extends JPanel {
         add(scorePanel, BorderLayout.NORTH);
 
         history = new HistoryDialog(null);
+
+        revalidate();
+    }
+
+    private void destroy() {
+
+        removeAll();
+
+        scorePanel = null;
+
+        history.dispose();
+        history = null;
 
         revalidate();
     }

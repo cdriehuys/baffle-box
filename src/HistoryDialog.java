@@ -28,7 +28,7 @@ public class HistoryDialog extends JDialog {
 
     private void createElements() {
 
-        history = new JTextArea(20, 40);
+        history = new JTextArea(20, 30);
         history.setEditable(false);
 
         JScrollPane scroll = new JScrollPane(history);

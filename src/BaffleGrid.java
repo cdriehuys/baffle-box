@@ -74,7 +74,9 @@ public class BaffleGrid extends JPanel {
 
                 // assign the temp variable;
                 grid[row][col] = temp;
-                add(grid[row][col] != null ? grid[row][col] : new JPanel());
+
+                // if the area is null, insert a JPanel as a filler
+                add(getAt(row, col) != null ? getAt(row, col) : new JPanel());
             }
         }
 
@@ -90,6 +92,34 @@ public class BaffleGrid extends JPanel {
      * @return The parent Game object of this BaffleGrid
      */
     public Game getGame() { return (Game)getParent(); }
+
+    /**
+     * Gets the <code>ClickableArea</code> at the given row and column.
+     * @param row the row index
+     * @param col the column index
+     * @return a <code>ClickableArea</code> reference
+     */
+    public ClickableArea getAt(int row, int col) {
+
+        if (row < 0 || row >= grid.length || col < 0 || col >= grid[0].length)
+            throw new IllegalArgumentException(String.format("Index of row: %d, col: %d is out of bounds.", row, col));
+
+        return grid[row][col];
+    }
+
+    /**
+     * Gets the <code>ClickableArea</code> at the row and column specified in the given integer array.
+     * @param loc an integer array where <code>loc[0]</code> is the row index and <code>loc[1]</code> is the
+     *            column index
+     * @return a reference to a <code>ClickableArea</code>
+     */
+    public ClickableArea getAt(Integer[] loc) {
+
+        if (loc.length != 2)
+            throw new IllegalArgumentException("Argument must be an integer array with 2 values of the form {row, col}");
+
+        return getAt(loc[0], loc[1]);
+    }
 
     /****************************** Mutators ********************************/
 
@@ -115,18 +145,18 @@ public class BaffleGrid extends JPanel {
                 loc = propagateBeam(loc, beamDir);
 
                 // continue to propagate the beam while the beam is in a Baffle
-                while (grid[loc[0]][loc[1]] instanceof Baffle) {
+                while (getAt(loc) instanceof Baffle) {
 
-                    ClickableArea area = grid[loc[0]][loc[1]];
+                    ClickableArea area = getAt(loc);
                     beamDir = area.getBeamDir(beamDir);
                     loc = propagateBeam(loc, beamDir);
                 }
 
                 // if the beam reaches a perimeter box, finish firing
-                if (grid[loc[0]][loc[1]] instanceof NumberBox) {
+                if (getAt(loc) instanceof NumberBox) {
 
                     // get the ending box
-                    NumberBox box = (NumberBox) grid[loc[0]][loc[1]];
+                    NumberBox box = (NumberBox)getAt(loc);
                     // highlight the starting and ending perimeter boxes
                     highlightVal(perimVal, box.getVal());
                     // log the shot in the history
@@ -185,7 +215,7 @@ public class BaffleGrid extends JPanel {
     private Integer[] getPerimValLocation(int val) {
 
         for (Integer[] loc : getPerimIndexes())
-            if (((NumberBox)(grid[loc[0]][loc[1]])).getVal() == val)
+            if (((NumberBox)(getAt(loc))).getVal() == val)
                 return loc;
 
         return null;
@@ -257,7 +287,7 @@ public class BaffleGrid extends JPanel {
     private void highlightVal(int startVal, int endVal) {
 
         for (Integer[] loc : getPerimIndexes()) {
-            NumberBox box = (NumberBox)grid[loc[0]][loc[1]];
+            NumberBox box = (NumberBox)getAt(loc);
             if (box.getVal() == startVal)
                 box.setHighlighted(true, false);
             else if (box.getVal() == endVal)
@@ -274,12 +304,12 @@ public class BaffleGrid extends JPanel {
     private void createBaffles(int numBaffles) {
 
         // create an array list to hold all possible baffle locations
-        ArrayList<int[]> possibleLocations = new ArrayList<int[]>();
+        ArrayList<Integer[]> possibleLocations = new ArrayList<Integer[]>();
 
         // populate the list with all the possible locations
         for (int row = 1; row < grid.length - 1; row++)
             for (int col = 1; col < grid[0].length - 1; col++)
-                possibleLocations.add(new int[] {row, col});
+                possibleLocations.add(new Integer[] {row, col});
 
         // loop for each baffle to be created
         for (int i = 0; i < numBaffles; i++) {
@@ -288,8 +318,8 @@ public class BaffleGrid extends JPanel {
             int index = (int)(Math.random() * possibleLocations.size());
 
             // generate a baffle at the location reference by the index
-            int[] loc = possibleLocations.get(index);
-            ((Baffle)(grid[loc[0]][loc[1]])).generateBaffle();
+            Integer[] loc = possibleLocations.get(index);
+            ((Baffle)(getAt(loc))).generateBaffle();
 
             // remove that location from the list
             possibleLocations.remove(index);

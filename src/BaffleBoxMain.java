@@ -12,6 +12,7 @@ public class BaffleBoxMain extends JFrame {
         // create a new game with the specified dimensions
         Game game = new Game(GAME_WIDTH, GAME_HEIGHT);
 
+        // add the menu bar
         setJMenuBar(game.createMenubar());
 
         // add the game to the frame
